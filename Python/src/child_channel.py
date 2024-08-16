@@ -7,6 +7,12 @@ class ChildChannel(object):
     """
     docstring
     """
+    #add static variable to mark start of stdout message
+    #add static variable to mark end of stdout message
+
+    STDOUT_START = 'out_start_###'
+    STDOUT_END = 'out_end_###'
+
     def __init__(self):
         """
         docstring
