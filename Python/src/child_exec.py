@@ -55,6 +55,7 @@ class ChildExecScript(ChildExec):
         if 'declarations' in self.message.json_object:
             for x in self.message.json_object['declarations']:
                 for y in x.keys():
+                    print('here3', y + ' = ' + json.dumps(x[y]), flush=True)
                     self.execs.append(y + ' = ' + json.dumps(x[y]))
                     decl[y]=x[y]
                     """
