@@ -8,7 +8,6 @@ from child_channel import ChildChannel
 #import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn import tree
-import io
 
 class M_Classifier(object):
   def __init__(self) -> None:
@@ -59,15 +58,4 @@ class M_Classifier(object):
     plt.figure(figsize = (10, 7))
     tree.plot_tree(self.clf, feature_names = self.iris.feature_names, class_names = self.iris.target_names, filled = True)
     #send the plot to the stdout
-    print(ChildChannel.STDOUT_START)
-
-    # Save the plot to a buffer
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-    
-    # Print the buffer's contents
-    print(buf.read())
-    
-    #mark end of stdout message
-    print(ChildChannel.STDOUT_END, flush=True)
+    plt.savefig('c:/tmp/output.png')
