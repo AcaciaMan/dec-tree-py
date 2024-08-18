@@ -8,7 +8,7 @@ from child_channel import ChildChannel
 import matplotlib.pyplot as plt
 from sklearn import tree
 
-from src.m_settings.m_settings import M_SettingsSingleton
+from m_settings.m_settings import M_SettingsSingleton
 
 class M_Classifier(object):
   def __init__(self) -> None:

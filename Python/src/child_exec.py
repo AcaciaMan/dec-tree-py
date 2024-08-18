@@ -4,6 +4,7 @@ from child_message import ChildMessage, ChildMessageType
 import re
 
 from typing import TypedDict
+from m_settings.m_settings import M_SettingsSingleton
 
 class PythonScriptType(TypedDict):
     imports: list
@@ -22,6 +23,7 @@ class ChildExec(object):
         """
         self.message: ChildMessage = None
         self.execs: list = None
+        self.iset = M_SettingsSingleton()
 
     def __call__(self, *args: Any, **kwds: Any):
         """
@@ -57,6 +59,9 @@ class ChildExecScript(ChildExec):
                 for y in x.keys():
                     print('here3', y + ' = ' + json.dumps(x[y]), flush=True)
                     self.execs.append(y + ' = ' + json.dumps(x[y]))
+                    # if y equals 'm_settings', add to the settings dictionary
+                    if y == 'm_settings':
+                        self.iset.addSettings(x[y])
                     decl[y]=x[y]
                     """
                     for z in x[y].keys():
