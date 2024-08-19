@@ -4,7 +4,7 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from child_channel import ChildChannel
-#import seaborn as sns
+import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn import tree
 
@@ -56,7 +56,19 @@ class M_Classifier(object):
     """
     docstring
     """
-    plt.figure(figsize = (10, 7))
+    plt.figure()
     tree.plot_tree(self.iset.clf, feature_names = self.iris.feature_names, class_names = self.iris.target_names, filled = True)
     #send the plot to the stdout
-    plt.savefig(self.iset.m_set['rootFolder']+'/output.png')
+    plt.savefig(self.iset.m_set['rootFolder']+'/decision_tree.png')
+
+  def plot_importance(self):
+    """
+    docstring
+    """
+    #make new figure
+    plt.figure(figsize=(10,10))
+
+    sns.barplot(x = self.iris.feature_names, y=self.iset.clf.feature_importances_ )
+    plt.xticks(rotation = 50)
+    plt.savefig(self.iset.m_set['rootFolder']+'/feature_importance.png')
+    
