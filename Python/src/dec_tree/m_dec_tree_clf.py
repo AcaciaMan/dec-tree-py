@@ -6,12 +6,12 @@ from m_settings.m_settings import M_SettingsSingleton
 import seaborn as sns
 
 
-class M_DecTreeSingleton:
+class M_DecTreeClfSingleton:
     _instance = None
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
-            cls._instance = super(M_DecTreeSingleton, cls).__new__(cls, *args, **kwargs)
+            cls._instance = super(M_DecTreeClfSingleton, cls).__new__(cls, *args, **kwargs)
         return cls._instance
 
     def __init__(self):
