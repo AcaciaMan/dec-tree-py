@@ -48,9 +48,18 @@ class M_DecTreeSingleton:
     
     def plot_tree(self):
         """
-        docstring
+        Plot the decision tree with dynamic figsize
         """
-        plt.figure()
+        # Determine the depth of the tree
+        tree_depth = self.iset.clf.get_depth()
+        num_leaves = self.iset.clf.get_n_leaves()
+
+        # Set the width and height proportional to the depth and number of leaves
+        width = tree_depth * 2
+        height = num_leaves * 0.5
+
+        # Make new figure with dynamic figsize
+        plt.figure(figsize=(width, height))
         tree.plot_tree(self.iset.clf, feature_names=self.iset.m_set['features_names'], class_names=self.iset.m_set['class_name'], filled=True)
         #send the plot to the stdout
         plt.savefig(self.iset.m_set['rootFolder']+'/decision_tree.png')
