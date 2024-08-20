@@ -51,7 +51,7 @@ class M_DecTreeSingleton:
         docstring
         """
         plt.figure()
-        tree.plot_tree(self.iset.clf, feature_names=self.iset.m_set['features_names'], class_names=self.iset.m_set['target_name'], filled=True)
+        tree.plot_tree(self.iset.clf, feature_names=self.iset.m_set['features_names'], class_names=self.iset.m_set['class_name'], filled=True)
         #send the plot to the stdout
         plt.savefig(self.iset.m_set['rootFolder']+'/decision_tree.png')
 
