@@ -65,8 +65,12 @@ class M_Classifier(object):
     """
     docstring
     """
-    #make new figure
-    plt.figure(figsize=(10,10))
+    num_features = len(self.iris.feature_names)
+    width = num_features * 1.5  # Adjust the multiplier as needed
+    height = 10  # Fixed height or adjust as needed
+
+    # Make new figure with dynamic figsize
+    plt.figure(figsize=(width, height))
 
     sns.barplot(x = self.iris.feature_names, y=self.iset.clf.feature_importances_ )
     plt.xticks(rotation = 50)
