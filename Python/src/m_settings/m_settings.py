@@ -46,5 +46,5 @@ class M_SettingsSingleton:
     
     def getTryFolder(self):
         """return the current try folder"""
-        return self.m_set['rootFolder']+self.m_try['name']
+        return self.m_set['rootFolder']+'/'+self.m_try['name']
     

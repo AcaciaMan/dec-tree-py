@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 from sklearn import tree
-from sklearn.base import accuracy_score
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 from m_settings.m_settings import M_SettingsSingleton
 import seaborn as sns
 
@@ -60,7 +60,7 @@ class M_DecTreeClfSingleton:
 
         # Make new figure with dynamic figsize
         plt.figure(figsize=(width, height))
-        tree.plot_tree(self.iset.clf, feature_names=self.iset.m_try['features_names'], class_names=self.iset.m_try['class_name'], filled=True)
+        tree.plot_tree(self.iset.clf, feature_names=self.iset.m_try['features_names'], class_names=self.iset.m_try['target_values'], filled=True)
         #send the plot to the stdout
         plt.savefig(self.iset.getTryFolder()+'/decision_tree.png')
 
