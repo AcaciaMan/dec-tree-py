@@ -33,8 +33,8 @@ class M_DecTreeClfSingleton:
         """
         docstring
         """
-        X = self.iset.df[self.iset.m_set['features_names']]
-        y = self.iset.df[self.iset.m_set['target_name']]
+        X = self.iset.df[self.iset.m_try['features_names']]
+        y = self.iset.df[self.iset.m_try['target_name']]
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
@@ -60,22 +60,22 @@ class M_DecTreeClfSingleton:
 
         # Make new figure with dynamic figsize
         plt.figure(figsize=(width, height))
-        tree.plot_tree(self.iset.clf, feature_names=self.iset.m_set['features_names'], class_names=self.iset.m_set['class_name'], filled=True)
+        tree.plot_tree(self.iset.clf, feature_names=self.iset.m_try['features_names'], class_names=self.iset.m_try['class_name'], filled=True)
         #send the plot to the stdout
-        plt.savefig(self.iset.m_set['rootFolder']+'/decision_tree.png')
+        plt.savefig(self.iset.getTryFolder()+'/decision_tree.png')
 
     def plot_feature_importance(self):
         """
         docstring
         """
-        num_features = len(self.iset.m_set['features_names'])
+        num_features = len(self.iset.m_try['features_names'])
         width = num_features * 1.5  # Adjust the multiplier as needed
         height = 10  # Fixed height or adjust as needed
 
         # Make new figure with dynamic figsize
         plt.figure(figsize=(width, height))
 
-        sns.barplot(x = self.iset.m_set['features_names'], y=self.iset.clf.feature_importances_ )
+        sns.barplot(x = self.iset.m_try['features_names'], y=self.iset.clf.feature_importances_ )
         plt.xticks(rotation = 50)
-        plt.savefig(self.iset.m_set['rootFolder']+'/feature_importance.png')
+        plt.savefig(self.iset.getTryFolder()+'/feature_importance.png')
     
