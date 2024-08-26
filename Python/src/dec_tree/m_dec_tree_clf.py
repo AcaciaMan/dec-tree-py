@@ -22,9 +22,9 @@ class M_DecTreeClfSingleton:
             self.iset = M_SettingsSingleton()
             self.initialized = True
 
-    def generate_df(self):
+    def load_df(self):
         """
-        Generate a dataframe 
+        Load a dataframe 
         """
         #make method abstract
         pass
