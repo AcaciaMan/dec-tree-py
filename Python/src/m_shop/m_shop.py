@@ -1,7 +1,6 @@
 
 import pandas as pd
 import numpy as np
-
 #class to manage the shop data
 class M_Shop:
     def __init__(self):
@@ -16,6 +15,8 @@ class M_Shop:
         self.ledger = []
         self.ledger.append({"item":"Drill", "name":"Expensive","year":2020,"month":1,"sell":0,"buy":0,"impressions":0,"demand":0, "stock":0})
 
+        self.df = pd.DataFrame()
+
 
     def generate_ledger_df(self):
         """
@@ -23,7 +24,7 @@ class M_Shop:
         """
         # Create a list of months
         months = []
-        for year in range(2019, 2024):
+        for year in range(2019, 2025):
             for month in range(1, 13):
                 months.append((year, month))
 
@@ -44,7 +45,8 @@ class M_Shop:
                     'sell': 0,
                     'buy': 0,
                     'impressions': 0,
-                    'demand': 0
+                    'demand': 0,
+                    'stock': 0
 
                 })
 
@@ -69,7 +71,7 @@ class M_Shop:
         Assign a random number of demands to each month for each item
         """
         for item in self.shop:
-            for year in range(2019, 2024):
+            for year in range(2019, 2025):
                 for month in range(1, 13):
                     self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'demand'] = np.random.randint(0, 20)    
 
@@ -79,21 +81,22 @@ class M_Shop:
         Do not sell more than the number of buys in the first month
         """
         for item in self.shop:
-            self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == 2019) & (self.df['month'] == 1), 'sell'] = np.minimum(self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == 2019) & (self.df['month'] == 1), 'demand'], self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == 2019) & (self.df['month'] == 1), 'buy'])
+            self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == 2019) & (self.df['month'] == 1), 'sell'] = min(self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == 2019) & (self.df['month'] == 1), 'demand'].iloc[0], self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == 2019) & (self.df['month'] == 1), 'buy'].iloc[0])
 
-    def update_stock(self):
+    def update_stock(self, year, month):
         """
-        Update the stock for each month
+        Update the stock
         """
         for item in self.shop:
-            for year in range(2019, 2024):
-                for month in range(1, 13):
-                    if month == 1 and year == 2019:
-                        self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'stock'] = self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'buy'] - self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'sell']
-                    elif month == 1 and year != 2019:
-                        self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'stock'] = self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year-1) & (self.df['month'] == 12), 'stock'] + self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'buy'] - self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'sell']
-                    else:
-                        self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'stock'] = self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month-1), 'stock'] + self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'buy'] - self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'sell']
+            if month == 1 and year == 2019:
+                self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'stock'] = int(
+                    self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'buy'].iloc[0] - 
+                    self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'sell'].iloc[0]
+                    )
+            elif month == 1 and year != 2019:
+                self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'stock'] = int(self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year-1) & (self.df['month'] == 12), 'stock'].iloc[0] + self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'buy'].iloc[0] - self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'sell'].iloc[0])
+            else:
+                self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'stock'] = int(self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month-1), 'stock'].iloc[0] + self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'buy'].iloc[0] - self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'sell'].iloc[0])
 
     def buy_and_sell(self):
         """
@@ -104,33 +107,33 @@ class M_Shop:
         self.assign_first_month_buy()
         self.assign_demand()
         self.assign_first_month_sell()
-        self.update_stock()
+        self.update_stock( 2019, 1)
         #each month buy item randomly between 10 and 30 if previous month stock is less than 5
         #each month sell items in demand whenever there are items in stock
         #update stock for each month
         for item in self.shop:
-            for year in range(2019, 2024):
+            for year in range(2019, 2025):
                 for month in range(1, 13):
                     if month == 1 and year == 2019:
                         continue
                     elif month == 1 and year != 2019:
-                        if self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year-1) & (self.df['month'] == 12), 'stock'] < 5:
+                        if (self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year-1) & (self.df['month'] == 12), 'stock'] < 5).all():
                             self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'buy'] = np.random.randint(10, 30)
                         #sell items in demand whenever there are items in stock
                         # Do not sell more than the number of items in stock
                         # Do not sell more than the demand
-                        self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'sell'] = np.minimum(self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year-1) & (self.df['month'] == 12), 'stock'], self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'demand'])     
-                        self.update_stock()
+                        self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'sell'] = min(self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year-1) & (self.df['month'] == 12), 'stock'].iloc[0], self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'demand'].iloc[0])     
+                        self.update_stock( year, month)
                     else:
-                        if self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month-1), 'stock'] < 5:
+                        if (self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month-1), 'stock'] < 5).all():
                             self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'buy'] = np.random.randint(10, 30)
                         #sell items in demand whenever there are items in stock
                         # Do not sell more than the number of items in stock
                         # Do not sell more than the demand
-                        self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'sell'] = np.minimum(self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month-1), 'stock'], self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'demand'])     
-                        self.update_stock()
+                        self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'sell'] = min(self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month-1), 'stock'].iloc[0], self.df.loc[(self.df['item'] == item['item']) & (self.df['name'] == item['name']) & (self.df['year'] == year) & (self.df['month'] == month), 'demand'].iloc[0])    
+                        self.update_stock( year, month)
 
-
+        
 
         return self.df
 
