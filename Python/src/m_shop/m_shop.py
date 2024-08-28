@@ -5,12 +5,12 @@ import numpy as np
 class M_Shop:
     def __init__(self):
         self.shop = []
-        self.shop.append({"item":"Drill", "name":"Expensive"})
-        self.shop.append({"item":"Drill", "name":"Mid-priced"})
-        self.shop.append({"item":"Drill", "name":"Cheap"})
-        self.shop.append({"item":"Hammer", "name":"Expensive"})
-        self.shop.append({"item":"Hammer", "name":"Mid-priced"})
-        self.shop.append({"item":"Hammer", "name":"Cheap"})
+        self.shop.append({"item":"Drill", "name":"Expensive drill"})
+        self.shop.append({"item":"Drill", "name":"Mid-priced drill"})
+        self.shop.append({"item":"Drill", "name":"Cheap drill"})
+        self.shop.append({"item":"Hammer", "name":"Expensive hammer"})
+        self.shop.append({"item":"Hammer", "name":"Mid-priced hammer"})
+        self.shop.append({"item":"Hammer", "name":"Cheap hammer"})
 
         self.ledger = []
         self.ledger.append({"item":"Drill", "name":"Expensive","year":2020,"month":1,"sell":0,"buy":0,"impressions":0,"demand":0, "stock":0})
