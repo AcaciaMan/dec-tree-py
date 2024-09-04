@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
 class M_SettingsSingleton:
     _instance = None
@@ -16,6 +16,7 @@ class M_SettingsSingleton:
         if not hasattr(self, 'initialized'):  # Ensure __init__ is called only once
             self.df = pd.DataFrame()
             self.clf = DecisionTreeClassifier()
+            self.regressor = DecisionTreeRegressor()
             self.m_set = {}
             self.m_conf = {}
             self.m_try = {}
