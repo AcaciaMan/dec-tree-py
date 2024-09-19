@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 import pandas as pd
 from m_settings.m_settings import M_SettingsSingleton
+from time_decomp.decomposition import DecompositionSingleton
 
 class M_Regressor:
     def __init__(self):
@@ -74,3 +75,17 @@ class M_Regressor:
         sns.lineplot(x='month', y='sell_pred', data=self.df, label='Predicted sell')
         plt.title('Sell Prediction')
         plt.savefig(self.iset.getTryFolder() + '/sell_prediction.png')
+
+    def plot_seasonality(self):
+        """
+        Plot the seasonality
+        """
+        # Get the seasonality
+        decomp = DecompositionSingleton()
+        decomp.df = self.df
+        decomp.features = ['sell']
+        decomp.decompose_params = {'model': 'additive', 'period':12, 'extrapolate_trend':'freq'}
+        decomp.m_decompose()
+        decomp.plot_decomposition('sell', 'year', range(2021,2025), 'month', 'Sells trend')
+
+        plt.savefig(self.iset.getTryFolder() + '/selltrend.png')
