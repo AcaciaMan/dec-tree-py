@@ -1,10 +1,12 @@
 #class to implement regression using decision tree
 
 from matplotlib import pyplot as plt
+from pyparsing import line
 import seaborn as sns
 import pandas as pd
 from m_settings.m_settings import M_SettingsSingleton
 from time_decomp.decomposition import DecompositionSingleton
+from time_decomp.environmentaltrends import EnvironmentalTrends
 
 class M_Regressor:
     def __init__(self):
@@ -89,3 +91,23 @@ class M_Regressor:
         decomp.plot_decomposition('sell', 'year', range(2021,2025), 'month', 'Sells trend')
 
         plt.savefig(self.iset.getTryFolder() + '/selltrend.png')
+
+    def calc_trends(self):
+        """
+        Calculate the trends
+        """
+        decomp = EnvironmentalTrends()
+        decomp.df = self.df
+        decomp.features = ['sell']
+        decomp.trend_data_params = {'year_col':'year', 'month_col':'month' }
+        decomp.trends_params = {'seasons_per_year': 12, 'trend_lengths': [1], 'end_years': [2024]} 
+        decomp.m_trends()
+        # save the trend data from dataframe decomp.t['sell'] head to a text file
+        s = decomp.t['sell'].head().to_string(line_width=60)
+
+    
+        
+
+        with open(self.iset.getTryFolder() + '/trends.txt', 'w') as f:
+            f.write(s)
+        
